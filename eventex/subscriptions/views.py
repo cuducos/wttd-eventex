@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.core import mail
 from django.http import HttpResponseRedirect
@@ -8,31 +9,33 @@ from eventex.subscriptions.forms import SubscriptionForm
 
 
 def subscribe(request):
+    return create(request) if request.method == 'POST' else new(request)
 
-    if request.method == 'POST':
 
-        # validate form data
-        form = SubscriptionForm(request.POST)
-        if form.is_valid():
+def create(request):
 
-            # create email body
-            body = render_to_string('subscriptions/subscription_email.txt',
-                                    form.cleaned_data)
+    form = SubscriptionForm(request.POST)
 
-            # send email
-            sender = 'contato@eventex.com.br'
-            mail.send_mail('Confirmação de Inscrição', body, sender,
-                           [sender, form.cleaned_data['email']])
+    if not form.is_valid():
+        return render(request, 'subscriptions/subscription_form.html',
+                      {'form': form})
 
-            # show success message
-            messages.success(request, 'Inscrição realizada com sucesso!')
-            return HttpResponseRedirect('/inscricao/')
+    _send_mail('Confirmação de Inscrição',
+               settings.DEFAULT_FROM_EMAIL,
+               form.cleaned_data['email'],
+               'subscriptions/subscription_email.txt',
+               form.cleaned_data)
 
-        # show errors
-        else:
-            return render(request, 'subscriptions/subscription_form.html',
-                          {'form': form})
+    messages.success(request, 'Inscrição realizada com sucesso!')
 
-    # render new form
+    return HttpResponseRedirect('/inscricao/')
+
+
+def new(request):
     return render(request, 'subscriptions/subscription_form.html',
                   {'form': SubscriptionForm()})
+
+
+def _send_mail(subject, sender, to, template_name, context):
+    body = render_to_string(template_name, context)
+    mail.send_mail(subject, body, sender, [sender, to])
