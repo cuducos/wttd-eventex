@@ -347,3 +347,18 @@ section header h2 {
 
 
 /* Fim Customização */
+
+.alert {
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+.alert p {
+  padding: .5rem 0 .5rem;
+}
+.alert.success {
+  color: #3c763d;
+  background-color: #dff0db;
+  border-color: #d0e9c6;
+}
