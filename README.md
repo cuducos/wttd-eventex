@@ -2,6 +2,10 @@
 
 Project developed during the [WTTD](http://welcometothedjango.com.br)
 
+[![Build Status](https://travis-ci.org/cuducos/wttd-eventex.svg?branch=master)](https://travis-ci.org/cuducos/wttd-eventex)
+[![Code Climate](https://codeclimate.com/github/cuducos/wttd-eventex/badges/gpa.svg)](https://codeclimate.com/github/cuducos/wttd-eventex)
+
+
 ## Running locally
 
 1. Clone the repository
