@@ -19,7 +19,7 @@ Project developed during the [WTTD](http://welcometothedjango.com.br)
 git clone git@github.com:cuducos/wttd-eventex.git wttd && cd wttd
 python -m venv .wttd
 source .wttd/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
 cp contrib/env-sample .env
 python manage.py test
 ```
