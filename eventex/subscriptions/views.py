@@ -28,7 +28,6 @@ def create(request):
                form.cleaned_data)
 
     messages.success(request, 'Inscrição realizada com sucesso!')
-
     Subscription.objects.create(**form.cleaned_data)
 
     return HttpResponseRedirect('/inscricao/')
