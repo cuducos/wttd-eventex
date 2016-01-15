@@ -3,6 +3,7 @@
 Project developed during the [WTTD](http://welcometothedjango.com.br)
 
 [![Build Status](https://travis-ci.org/cuducos/wttd-eventex.svg?branch=master)](https://travis-ci.org/cuducos/wttd-eventex)
+[![Code Health](https://landscape.io/github/cuducos/wttd-eventex/master/landscape.svg?style=flat)](https://landscape.io/github/cuducos/wttd-eventex/master)
 [![Code Climate](https://codeclimate.com/github/cuducos/wttd-eventex/badges/gpa.svg)](https://codeclimate.com/github/cuducos/wttd-eventex)
 
 
