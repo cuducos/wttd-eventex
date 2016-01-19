@@ -1,22 +1,23 @@
 from django.core import mail
+from django.shortcuts import resolve_url
 from django.test import TestCase
 
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
 
-class SubscribeGet(TestCase):
+class SubscribeNewGet(TestCase):
 
     def setUp(self):
-        self.response = self.client.get('/inscricao/')
+        self.resp = self.client.get(resolve_url('subscriptions:new'))
 
     def test_get(self):
         """ GET /inscricao/ must return status code 200"""
-        self.assertEqual(200, self.response.status_code)
+        self.assertEqual(200, self.resp.status_code)
 
     def test_template(self):
         """Must use subscriptions/subscription_form.html"""
-        self.assertTemplateUsed(self.response,
+        self.assertTemplateUsed(self.resp,
                                 'subscriptions/subscription_form.html')
 
     def test_html(self):
@@ -28,30 +29,30 @@ class SubscribeGet(TestCase):
                 ('type="submit"', 1))
         for text, count in tags:
             with self.subTest():
-                self.assertContains(self.response, text, count)
+                self.assertContains(self.resp, text, count)
 
     def test_csrf(self):
         """HTML must contain CSRF"""
-        self.assertContains(self.response, 'csrfmiddlewaretoken')
+        self.assertContains(self.resp, 'csrfmiddlewaretoken')
 
     def test_has_form(self):
         """Context must have subscription form"""
-        form = self.response.context['form']
+        form = self.resp.context['form']
         self.assertIsInstance(form, SubscriptionForm)
 
 
-class SubscribePostValid(TestCase):
+class SubscribeNewPostValid(TestCase):
 
     def setUp(self):
         data = {'name': 'John Due',
                 'cpf': '12345678900',
                 'email': 'email@server.com',
                 'phone': '42'}
-        self.response = self.client.post('/inscricao/', data)
+        self.resp = self.client.post(resolve_url('subscriptions:new'), data)
 
     def test_post(self):
         """Valid post should redirect to /inscricao/<id>/"""
-        self.assertRedirects(self.response, '/inscricao/1/')
+        self.assertRedirects(self.resp, resolve_url('subscriptions:detail', 1))
 
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
@@ -60,17 +61,17 @@ class SubscribePostValid(TestCase):
         self.assertTrue(Subscription.objects.exists())
 
 
-class SubscribePostInvalid(TestCase):
+class SubscribeNewPostInvalid(TestCase):
 
     def setUp(self):
-        self.response = self.client.post('/inscricao/', dict())
-        self.form = self.response.context['form']
+        self.resp = self.client.post(resolve_url('subscriptions:new'), dict())
+        self.form = self.resp.context['form']
 
     def test_post(self):
-        self.assertEqual(200, self.response.status_code)
+        self.assertEqual(200, self.resp.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response,
+        self.assertTemplateUsed(self.resp,
                                 'subscriptions/subscription_form.html')
 
     def test_has_form(self):
