@@ -5,10 +5,31 @@ from eventex.subscriptions.forms import SubscriptionForm
 
 class SubscriptionFormtest(TestCase):
 
-    def setUp(self):
-        self.form = SubscriptionForm()
-
     def test_form_has_fields(self):
         """Form must have 4 fields"""
-        self.assertSequenceEqual(list(self.form.fields),
+        form = SubscriptionForm()
+        self.assertSequenceEqual(list(form.fields),
                                  ['name', 'cpf', 'email', 'phone'])
+
+    def test_if_cpf_is_numeric(self):
+        """CPF must contain only numbers"""
+        form = self.make_validated_form(cpf='ABC45678900')
+        self.assertFormErrorCode(form, 'cpf', 'digits')
+
+    def test_cpf_has_11_digits(self):
+        """CPF must contain 11 digits"""
+        form = self.make_validated_form(cpf='1234')
+        self.assertFormErrorCode(form, 'cpf', 'length')
+
+    def make_validated_form(self, **kwargs):
+        valid = dict(name='John Doe', cpf='12345678900',
+                     email='johndoe@mailinator.com', phone='2345678')
+        data = dict(valid, **kwargs)
+        form = SubscriptionForm(data)
+        form.is_valid()
+        return form
+
+    def assertFormErrorCode(self, form, field, code):
+        errors = form.errors.as_data()
+        exception = errors[field][0]
+        self.assertEqual(exception.code, code)
