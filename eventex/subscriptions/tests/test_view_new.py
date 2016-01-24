@@ -44,7 +44,7 @@ class SubscribeNewGet(TestCase):
 class SubscribeNewPostValid(TestCase):
 
     def setUp(self):
-        data = {'name': 'John Due',
+        data = {'name': 'John Doe',
                 'cpf': '12345678900',
                 'email': 'email@server.com',
                 'phone': '42'}
@@ -82,3 +82,11 @@ class SubscribeNewPostInvalid(TestCase):
 
     def test_dont_save_subscription(self):
         self.assertFalse(Subscription.objects.exists())
+
+
+class TemplateRegressionTest(TestCase):
+
+    def test_template_has_form_errors(self):
+        invalid_data = {'name': 'John Doe', 'cpf': '12345678900'}
+        resp = self.client.post(resolve_url('subscriptions:new'), invalid_data)
+        self.assertContains(resp, '<ul class="errorlist nonfield')
