@@ -7,7 +7,7 @@ class SubscribePostValid(TestCase):
 
     def setUp(self):
         url = resolve_url('subscriptions:new')
-        self.client.post(url, dict(name='John Due', cpf='12345678900',
+        self.client.post(url, dict(name='John Doe', cpf='12345678900',
                                    email='email@server.com', phone='42'))
         self.email = mail.outbox[0]
 
@@ -23,7 +23,7 @@ class SubscribePostValid(TestCase):
                          self.email.to)
 
     def test_subscription_email_body(self):
-        contents = ['John Due', '12345678900', 'email@server.com', '42']
+        contents = ['John Doe', '12345678900', 'email@server.com', '42']
         for content in contents:
             with self.subTest():
                 self.assertIn(content, self.email.body)
