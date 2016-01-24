@@ -39,7 +39,7 @@ class SubscriptionFormtest(TestCase):
     def test_must_inform_email_or_phone(self):
         """Email and phone are optional, but one of them must be informed"""
         form = self.make_validated_form(phone='', email='')
-        self.assertListEqual(['__all__'], list(form.errors))
+        self.assertFormErrorCode(form, '__all__', 'contact')
 
     def make_validated_form(self, **kwargs):
         valid = dict(name='John Doe', cpf='12345678900',
