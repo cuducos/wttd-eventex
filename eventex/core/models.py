@@ -19,3 +19,21 @@ class Speaker(models.Model):
     class Meta:
         verbose_name = 'palestrante'
         verbose_name_plural = 'palestrantes'
+
+
+class Contact(models.Model):
+
+    EMAIL = 'E'
+    TELEPHONE = 'T'
+    KINDS = ((EMAIL, 'E-mail'), (TELEPHONE, 'Telefone'))
+
+    speaker = models.ForeignKey('Speaker', verbose_name='palestrante')
+    kind = models.CharField('tipo', max_length=1, choices=KINDS)
+    value = models.CharField('contato', max_length=255)
+
+    def __str__(self):
+        return self.value
+
+    class Meta:
+        verbose_name = 'Contato'
+        verbose_name_plural = 'Contatos'
