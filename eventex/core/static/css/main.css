@@ -376,3 +376,16 @@ section header h2 {
   float: left;
   padding-right: 15px;
 }
+
+.talks h3, .talks h4 {
+  font-size: 1.2em;
+  line-height: initial;
+  margin: 0;
+  min-height: 0;
+  padding: 0;
+}
+
+.talks h4 {
+  font-style: italic;
+  font-family: sinkin_sans300_light;
+}
