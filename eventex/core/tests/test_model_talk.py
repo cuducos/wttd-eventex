@@ -1,5 +1,5 @@
 from django.test import TestCase
-from eventex.core.models import Talk
+from eventex.core.models import Talk, Course
 from eventex.core.managers import PeriodManager
 
 
@@ -12,7 +12,7 @@ class TalkModelTest(TestCase):
         self.assertTrue(Talk.objects.exists())
 
     def test_has_speakers(self):
-        """Talk can have many speaker and vv. """
+        """Talk can have many speakers and vv. """
         self.talk.speakers.create(name='Nome do Palestrante',
                                   slug='nome-do-palestrante',
                                   website='http://hbn.link/')
@@ -54,3 +54,28 @@ class PeriodManagerTest(TestCase):
     def test_(self):
         qs = Talk.objects.afternoon()
         self.assertQuerysetEqual(qs, ['Palestra da Tarde'], lambda o: o.title)
+
+
+class TestModelCourse(TestCase):
+
+    def setUp(self):
+        self.course = Course.objects.create(title='Título do Curso',
+                                            start='09:00',
+                                            description='Descrição do curso',
+                                            slots=20)
+
+    def test_create(self):
+        self.assertTrue(Course.objects.exists())
+
+    def test_has_speakers(self):
+        """Course can have many speakers and vv. """
+        self.course.speakers.create(name='Nome do Palestrante',
+                                    slug='nome-do-palestrante',
+                                    website='http://hbn.link/')
+        self.assertEqual(1, self.course.speakers.count())
+
+    def test_str(self):
+        self.assertEqual('Título do Curso', str(self.course))
+
+    def test_manager(self):
+        self.assertIsInstance(Course.objects, PeriodManager)

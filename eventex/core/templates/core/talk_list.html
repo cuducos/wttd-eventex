@@ -9,7 +9,7 @@
     {% for talk in morning_talks %}
     {% include 'core/talk_list_snippet.html' with talk=talk only %}
     {% empty %}
-    <p>Ainda não existem palestras confirmadas de manhã.
+    <p>Ainda não existem palestras confirmadas de manhã.</p>
     {% endfor %}
 
     <h2>Tarde</h2>
@@ -17,7 +17,15 @@
     {% for talk in afternoon_talks %}
     {% include 'core/talk_list_snippet.html' with talk=talk only %}
     {% empty %}
-    <p>Ainda não existem palestras confirmadas de tarde.
+    <p>Ainda não existem palestras confirmadas de tarde.</p>
+    {% endfor %}
+
+    <h2>Minicursos</h2>
+
+    {% for course in courses %}
+    {% include 'core/talk_list_snippet.html' with talk=course only %}
+    {% empty %}
+    <p>Ainda não existem minicursos confirmados.</p>
     {% endfor %}
 
   </div>
