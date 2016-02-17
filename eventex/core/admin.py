@@ -13,7 +13,7 @@ class SpeakerModelAdmin(admin.ModelAdmin):
 
     inlines = [ContactInline]
     prepopulated_fields = {'slug': ('name',)}
-    list_display = ['name', 'website_link', 'thumb']
+    list_display = ['name', 'website_link', 'thumb', 'email', 'phone']
 
     def website_link(self, obj):
         return '<a href="{0}">{0}</a>'.format(obj.website)
@@ -26,6 +26,20 @@ class SpeakerModelAdmin(admin.ModelAdmin):
 
     thumb.allow_tags = True
     thumb.short_description = 'foto'
+
+    def email(self, obj):
+        addr = obj.contact_set.emails().first()
+        if not addr:
+            return None
+        return '<a href="mailto:{addr}">{addr}</a>'.format(addr=addr)
+
+    email.allow_tags = True
+    email.short_description = 'e-mail'
+
+    def phone(self, obj):
+        return obj.contact_set.phones().first()
+
+    phone.short_description = 'telefone'
 
 admin.site.register(Speaker, SpeakerModelAdmin)
 admin.site.register(Talk)
