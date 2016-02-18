@@ -20,14 +20,6 @@
     <p>Ainda não existem palestras confirmadas de tarde.</p>
     {% endfor %}
 
-    <h2>Minicursos</h2>
-
-    {% for course in courses %}
-    {% include 'core/talk_list_snippet.html' with talk=course only %}
-    {% empty %}
-    <p>Ainda não existem minicursos confirmados.</p>
-    {% endfor %}
-
   </div>
 </section>
 {% endblock %}
