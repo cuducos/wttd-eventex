@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class PeriodManager(models.Manager):
+class PeriodQuerySet(models.QuerySet):
 
     MIDDAY = '12:00'
 
@@ -10,6 +10,9 @@ class PeriodManager(models.Manager):
 
     def afternoon(self):
         return self.filter(start__gte=self.MIDDAY)
+
+
+PeriodManager = models.Manager.from_queryset(PeriodQuerySet)
 
 
 class KindQuerySet(models.QuerySet):
